@@ -1,0 +1,196 @@
+Script run on  Sun Nov  5 12:07:10 EST 2023Script run by postgres on server : HOST with db postgres 
+Listing all tables and views                                     Access privileges
+ Schema |        Name         |   Type   | Access privileges | Column privileges | Policies 
+--------+---------------------+----------+-------------------+-------------------+----------
+ public | customer            | table    |                   |                   | 
+ public | customer_cid_seq    | sequence |                   |                   | 
+ public | employee            | table    |                   |                   | 
+ public | employee_cid_seq    | sequence |                   |                   | 
+ public | employee_eid_seq    | sequence |                   |                   | 
+ public | territory           | table    |                   |                   | 
+ public | territory_terid_seq | sequence |                   |                   | 
+ public | truck               | table    |                   |                   | 
+ public | truck_eid_seq       | sequence |                   |                   | 
+ public | truck_terid_seq     | sequence |                   |                   | 
+ public | truck_tid_seq       | sequence |                   |                   | 
+ public | vcertificate        | table    |                   |                   | 
+ public | vcertificate_id_seq | sequence |                   |                   | 
+ public | vendor              | table    |                   |                   | 
+ public | vendor_id_seq       | sequence |                   |                   | 
+ public | vendor_vid_seq      | sequence |                   |                   | 
+(16 rows)
+
+Start script
+                                    Table "public.customer"
+ Column |          Type          | Collation | Nullable |                Default                
+--------+------------------------+-----------+----------+---------------------------------------
+ cid    | integer                |           | not null | nextval('customer_cid_seq'::regclass)
+ cname  | character varying(100) |           | not null | 
+ cphone | character varying(12)  |           | not null | 
+ cemail | text                   |           | not null | 
+Indexes:
+    "customer_pkey" PRIMARY KEY, btree (cid)
+    "customer_cname_key" UNIQUE CONSTRAINT, btree (cname)
+    "customer_cphone_key" UNIQUE CONSTRAINT, btree (cphone)
+Check constraints:
+    "customer_cemail_check" CHECK (cemail ~* '[A-Za-z0-9._%]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}'::text)
+Referenced by:
+    TABLE "employee" CONSTRAINT "employee_cid_fkey" FOREIGN KEY (cid) REFERENCES customer(cid)
+    TABLE "employee" CONSTRAINT "employee_empname_fkey" FOREIGN KEY (empname) REFERENCES customer(cname) ON DELETE CASCADE
+    TABLE "employee" CONSTRAINT "employee_ephone_fkey" FOREIGN KEY (ephone) REFERENCES customer(cphone) ON DELETE CASCADE
+
+                                      Table "public.employee"
+  Column   |          Type          | Collation | Nullable |                Default                
+-----------+------------------------+-----------+----------+---------------------------------------
+ eid       | integer                |           | not null | nextval('employee_eid_seq'::regclass)
+ ename     | character varying(12)  |           | not null | 
+ empname   | character varying(12)  |           | not null | 
+ ephone    | character varying(12)  |           | not null | 
+ specialty | character varying(100) |           | not null | 
+ email     | text                   |           | not null | 
+ cid       | integer                |           | not null | nextval('employee_cid_seq'::regclass)
+Indexes:
+    "employee_pkey" PRIMARY KEY, btree (eid)
+    "employee_cid_key" UNIQUE CONSTRAINT, btree (cid)
+    "employee_email_key" UNIQUE CONSTRAINT, btree (email)
+    "employee_empname_key" UNIQUE CONSTRAINT, btree (empname)
+    "employee_ename_key" UNIQUE CONSTRAINT, btree (ename)
+    "employee_ephone_key" UNIQUE CONSTRAINT, btree (ephone)
+    "employee_specialty_key" UNIQUE CONSTRAINT, btree (specialty)
+Check constraints:
+    "employee_email_check" CHECK (email ~* '[A-Za-z0-9._%]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}'::text)
+Foreign-key constraints:
+    "employee_cid_fkey" FOREIGN KEY (cid) REFERENCES customer(cid)
+    "employee_empname_fkey" FOREIGN KEY (empname) REFERENCES customer(cname) ON DELETE CASCADE
+    "employee_ephone_fkey" FOREIGN KEY (ephone) REFERENCES customer(cphone) ON DELETE CASCADE
+Referenced by:
+    TABLE "truck" CONSTRAINT "truck_eid_fkey" FOREIGN KEY (eid) REFERENCES employee(eid)
+    TABLE "truck" CONSTRAINT "truck_email_fkey" FOREIGN KEY (email) REFERENCES employee(email) ON DELETE CASCADE
+    TABLE "truck" CONSTRAINT "truck_ename_fkey" FOREIGN KEY (ename) REFERENCES employee(empname) ON DELETE CASCADE
+    TABLE "truck" CONSTRAINT "truck_ephone_fkey" FOREIGN KEY (ephone) REFERENCES employee(ephone) ON DELETE CASCADE
+    TABLE "truck" CONSTRAINT "truck_specialty_fkey" FOREIGN KEY (specialty) REFERENCES employee(specialty) ON DELETE CASCADE
+    TABLE "vendor" CONSTRAINT "vendor_email_fkey" FOREIGN KEY (email) REFERENCES employee(email)
+
+                                     Table "public.vendor"
+  Column  |          Type          | Collation | Nullable |               Default               
+----------+------------------------+-----------+----------+-------------------------------------
+ vid      | integer                |           | not null | nextval('vendor_vid_seq'::regclass)
+ vname    | character varying(100) |           | not null | 
+ vphone   | character varying(12)  |           | not null | 
+ vemail   | text                   |           | not null | 
+ vtype    | character varying(100) |           | not null | 
+ vweight  | numeric(1,0)           |           | not null | 
+ quantity | numeric(1,0)           |           | not null | 
+ id       | integer                |           | not null | nextval('vendor_id_seq'::regclass)
+ review   | character varying(100) |           | not null | 
+ grade    | character varying(1)   |           | not null | 
+ vdate    | date                   |           | not null | 
+ cprice   | numeric(1,0)           |           | not null | 
+ email    | text                   |           | not null | 
+Indexes:
+    "vendor_pkey" PRIMARY KEY, btree (vid)
+    "vendor_cprice_key" UNIQUE CONSTRAINT, btree (cprice)
+    "vendor_email_key" UNIQUE CONSTRAINT, btree (email)
+    "vendor_grade_key" UNIQUE CONSTRAINT, btree (grade)
+    "vendor_id_key" UNIQUE CONSTRAINT, btree (id)
+    "vendor_review_key" UNIQUE CONSTRAINT, btree (review)
+    "vendor_vdate_key" UNIQUE CONSTRAINT, btree (vdate)
+Check constraints:
+    "vendor_email_check" CHECK (email ~* '[A-Za-z0-9._%]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}'::text)
+    "vendor_grade_check" CHECK (grade::text ~* '[A-D]'::text)
+    "vendor_vemail_check" CHECK (vemail ~* '[A-Za-z0-9._%]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}'::text)
+Foreign-key constraints:
+    "vendor_cprice_fkey" FOREIGN KEY (cprice) REFERENCES vcertificate(vprice) ON DELETE CASCADE
+    "vendor_email_fkey" FOREIGN KEY (email) REFERENCES employee(email)
+    "vendor_grade_fkey" FOREIGN KEY (grade) REFERENCES vcertificate(grade) ON DELETE CASCADE
+    "vendor_id_fkey" FOREIGN KEY (id) REFERENCES vcertificate(id) ON DELETE CASCADE
+    "vendor_vdate_fkey" FOREIGN KEY (vdate) REFERENCES vcertificate(vdate) ON DELETE CASCADE
+
+                                       Table "public.truck"
+   Column   |          Type          | Collation | Nullable |               Default                
+------------+------------------------+-----------+----------+--------------------------------------
+ tid        | integer                |           | not null | nextval('truck_tid_seq'::regclass)
+ generator  | boolean                |           | not null | 
+ visor      | boolean                |           | not null | 
+ deck       | boolean                |           | not null | 
+ stove      | boolean                |           | not null | 
+ vent       | boolean                |           | not null | 
+ prepcenter | boolean                |           | not null | 
+ eid        | integer                |           | not null | nextval('truck_eid_seq'::regclass)
+ ename      | character varying(100) |           | not null | 
+ ephone     | character varying(12)  |           | not null | 
+ specialty  | character varying(100) |           | not null | 
+ email      | text                   |           | not null | 
+ terid      | integer                |           | not null | nextval('truck_terid_seq'::regclass)
+ street     | character varying(100) |           | not null | 
+ city       | character varying(100) |           | not null | 
+ tstate     | character varying(2)   |           | not null | 
+ zipcode    | character varying(9)   |           | not null | 
+Indexes:
+    "truck_pkey" PRIMARY KEY, btree (tid)
+    "truck_city_key" UNIQUE CONSTRAINT, btree (city)
+    "truck_eid_key" UNIQUE CONSTRAINT, btree (eid)
+    "truck_email_key" UNIQUE CONSTRAINT, btree (email)
+    "truck_ename_key" UNIQUE CONSTRAINT, btree (ename)
+    "truck_ephone_key" UNIQUE CONSTRAINT, btree (ephone)
+    "truck_specialty_key" UNIQUE CONSTRAINT, btree (specialty)
+    "truck_street_key" UNIQUE CONSTRAINT, btree (street)
+    "truck_terid_key" UNIQUE CONSTRAINT, btree (terid)
+    "truck_tstate_key" UNIQUE CONSTRAINT, btree (tstate)
+    "truck_zipcode_key" UNIQUE CONSTRAINT, btree (zipcode)
+Foreign-key constraints:
+    "truck_city_fkey" FOREIGN KEY (city) REFERENCES territory(city) ON DELETE CASCADE
+    "truck_eid_fkey" FOREIGN KEY (eid) REFERENCES employee(eid)
+    "truck_email_fkey" FOREIGN KEY (email) REFERENCES employee(email) ON DELETE CASCADE
+    "truck_ename_fkey" FOREIGN KEY (ename) REFERENCES employee(empname) ON DELETE CASCADE
+    "truck_ephone_fkey" FOREIGN KEY (ephone) REFERENCES employee(ephone) ON DELETE CASCADE
+    "truck_specialty_fkey" FOREIGN KEY (specialty) REFERENCES employee(specialty) ON DELETE CASCADE
+    "truck_street_fkey" FOREIGN KEY (street) REFERENCES territory(street) ON DELETE CASCADE
+    "truck_terid_fkey" FOREIGN KEY (terid) REFERENCES territory(terid) ON DELETE CASCADE
+    "truck_tstate_fkey" FOREIGN KEY (tstate) REFERENCES territory(tstate) ON DELETE CASCADE
+    "truck_zipcode_fkey" FOREIGN KEY (zipcode) REFERENCES territory(zipcode) ON DELETE CASCADE
+
+                                      Table "public.territory"
+ Column  |          Type          | Collation | Nullable |                 Default                  
+---------+------------------------+-----------+----------+------------------------------------------
+ terid   | integer                |           | not null | nextval('territory_terid_seq'::regclass)
+ street  | character varying(100) |           | not null | 
+ city    | character varying(100) |           | not null | 
+ tstate  | character varying(2)   |           | not null | 
+ zipcode | character varying(9)   |           | not null | 
+Indexes:
+    "territory_pkey" PRIMARY KEY, btree (terid)
+    "territory_city_key" UNIQUE CONSTRAINT, btree (city)
+    "territory_street_key" UNIQUE CONSTRAINT, btree (street)
+    "territory_tstate_key" UNIQUE CONSTRAINT, btree (tstate)
+    "territory_zipcode_key" UNIQUE CONSTRAINT, btree (zipcode)
+Referenced by:
+    TABLE "truck" CONSTRAINT "truck_city_fkey" FOREIGN KEY (city) REFERENCES territory(city) ON DELETE CASCADE
+    TABLE "truck" CONSTRAINT "truck_street_fkey" FOREIGN KEY (street) REFERENCES territory(street) ON DELETE CASCADE
+    TABLE "truck" CONSTRAINT "truck_terid_fkey" FOREIGN KEY (terid) REFERENCES territory(terid) ON DELETE CASCADE
+    TABLE "truck" CONSTRAINT "truck_tstate_fkey" FOREIGN KEY (tstate) REFERENCES territory(tstate) ON DELETE CASCADE
+    TABLE "truck" CONSTRAINT "truck_zipcode_fkey" FOREIGN KEY (zipcode) REFERENCES territory(zipcode) ON DELETE CASCADE
+
+                                    Table "public.vcertificate"
+ Column |          Type          | Collation | Nullable |                 Default                  
+--------+------------------------+-----------+----------+------------------------------------------
+ id     | integer                |           | not null | nextval('vcertificate_id_seq'::regclass)
+ review | character varying(100) |           | not null | 
+ grade  | character varying(1)   |           | not null | 
+ vdate  | date                   |           | not null | 
+ vprice | numeric(1,0)           |           | not null | 
+Indexes:
+    "vcertificate_pkey" PRIMARY KEY, btree (id)
+    "vcertificate_grade_key" UNIQUE CONSTRAINT, btree (grade)
+    "vcertificate_review_key" UNIQUE CONSTRAINT, btree (review)
+    "vcertificate_vdate_key" UNIQUE CONSTRAINT, btree (vdate)
+    "vcertificate_vprice_key" UNIQUE CONSTRAINT, btree (vprice)
+Check constraints:
+    "vcertificate_grade_check" CHECK (grade::text ~* '[A-Z]'::text)
+Referenced by:
+    TABLE "vendor" CONSTRAINT "vendor_cprice_fkey" FOREIGN KEY (cprice) REFERENCES vcertificate(vprice) ON DELETE CASCADE
+    TABLE "vendor" CONSTRAINT "vendor_grade_fkey" FOREIGN KEY (grade) REFERENCES vcertificate(grade) ON DELETE CASCADE
+    TABLE "vendor" CONSTRAINT "vendor_id_fkey" FOREIGN KEY (id) REFERENCES vcertificate(id) ON DELETE CASCADE
+    TABLE "vendor" CONSTRAINT "vendor_vdate_fkey" FOREIGN KEY (vdate) REFERENCES vcertificate(vdate) ON DELETE CASCADE
+
+END OF SCRIPT

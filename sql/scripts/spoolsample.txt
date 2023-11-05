@@ -1,0 +1,15 @@
+Script run onScript run by postgres on server : HOST with dbpostgres 
+Listing all tables and views                                     Access privileges
+ Schema |        Name        |   Type   | Access privileges | Column privileges | Policies 
+--------+--------------------+----------+-------------------+-------------------+----------
+ public | ctruck             | table    |                   |                   | 
+ public | ctruck_cid_seq     | sequence |                   |                   | 
+ public | customer           | table    |                   |                   | 
+ public | employee           | table    |                   |                   | 
+ public | employee_empid_seq | sequence |                   |                   | 
+(5 rows)
+
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+END OF SCRIPT

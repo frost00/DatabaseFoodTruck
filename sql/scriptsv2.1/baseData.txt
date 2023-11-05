@@ -1,0 +1,19 @@
+Script run on  Sun Nov  5 12:07:05 EST 2023Script run by postgres on server : HOST with dbpostgres 
+Listing all tables and viewsStart script
+INSERT 0 1
+   column1   | column2  | column3 | column4 
+-------------+----------+---------+---------
+ 980 5th Ave | New York | NY      | 10075
+(1 row)
+
+     column1     |  column2  | column3 | column4 
+-----------------+-----------+---------+---------
+ 225 Prospect St | New Haven | CT      | 06511
+(1 row)
+
+      column1      | column2  | column3 | column4 
+-------------------+----------+---------+---------
+ Richmond Hill Ave | Stamford | CT      | 06902
+(1 row)
+
+END OF SCRIPT

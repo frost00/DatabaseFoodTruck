@@ -1,0 +1,30 @@
+Script run on  Sun Nov  5 12:06:54 EST 2023 Script run by postgres on server : HOST with db postgres 
+Listing all tables and viewsStart script
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+                                     Access privileges
+ Schema |        Name         |   Type   | Access privileges | Column privileges | Policies 
+--------+---------------------+----------+-------------------+-------------------+----------
+ public | customer            | table    |                   |                   | 
+ public | customer_cid_seq    | sequence |                   |                   | 
+ public | employee            | table    |                   |                   | 
+ public | employee_cid_seq    | sequence |                   |                   | 
+ public | employee_eid_seq    | sequence |                   |                   | 
+ public | territory           | table    |                   |                   | 
+ public | territory_terid_seq | sequence |                   |                   | 
+ public | truck               | table    |                   |                   | 
+ public | truck_eid_seq       | sequence |                   |                   | 
+ public | truck_terid_seq     | sequence |                   |                   | 
+ public | truck_tid_seq       | sequence |                   |                   | 
+ public | vcertificate        | table    |                   |                   | 
+ public | vcertificate_id_seq | sequence |                   |                   | 
+ public | vendor              | table    |                   |                   | 
+ public | vendor_id_seq       | sequence |                   |                   | 
+ public | vendor_vid_seq      | sequence |                   |                   | 
+(16 rows)
+
+END OF SCRIPT
